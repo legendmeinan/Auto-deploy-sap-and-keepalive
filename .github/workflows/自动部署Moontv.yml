@@ -258,8 +258,8 @@ jobs:
           echo "Deployment successful"
         else
          # cf delete ${{ env.APP_NAME }} -f -r
-         # echo "伙计,没资源了,部署失败,请明天早上8:20至9:00再尝试部署,已清理失败部署残留"
-          #exit 1
+         echo "伙计,没资源了,部署失败,请明天早上8:20至9:00再尝试部署,已清理失败部署残留"
+          # exit 1
         fi
         
     - name: Verify deployment
