@@ -1,17 +1,8 @@
-name: 自动部署moontv到SAP
+name: 自动部署节点订阅管理器到SAP
 
 on:
   workflow_dispatch:  # 只允许手动触发
     inputs:
-      type:
-        description: '选择部署的版本(Moontv自带源,Lunatv和KatelyaTV需手动配置源)'
-        required: true
-        default: 'Moontv'
-        type: choice
-        options:
-          - Lunatv
-          - Moontv
-          - KatelyaTV
       region:
         description: '选择部署区域'
         required: true
@@ -54,14 +45,14 @@ on:
           - Neo-UAE(Dubai)
           - Neo-KSA(Riyadh)
       app_name:
-        description: '应用名称(可选,留空则自动生成,被占用会部署失败)'
+        description: '应用名称（可选，留空则自动生成）'
         required: false
         default: ''
 
 env:
-  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE || 'ghcr.io/eooce/moontv:latest' }}
-  MEMORY: ${{ secrets.MEMORY || '512M' }}
-  DISK: ${{ secrets.DISK || '512M' }}
+  DOCKER_IMAGE: ${{ secrets.DOCKER_IMAGE || 'eooce/merge-sub:latest' }}
+  MEMORY: ${{ secrets.MEMORY || '256M' }}
+  DISK: ${{ secrets.DISK || '256M' }}
 
 jobs:
   deploy-app:
@@ -87,130 +78,130 @@ jobs:
           # 免费区域
           "SG(free)")
             echo "CF_API=https://api.cf.ap21.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-freesg$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-freesg$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "US(free)")
             echo "CF_API=https://api.cf.us10-001.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-freeus$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-freeus$RANDOM_STR" >> $GITHUB_ENV
             ;;
           # AWS 区域
           "AWS-AU(Sydney)")
             echo "CF_API=https://api.cf.ap10.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsau$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsau$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-BR(São Paulo)")
             echo "CF_API=https://api.cf.br10.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsbr$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsbr$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-KR(Seoul)")
             echo "CF_API=https://api.cf.ap12.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awskr$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awskr$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-CA(Montreal)")
             echo "CF_API=https://api.cf.ca10.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsca$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsca$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-US(VA)")
             echo "CF_API=https://api.cf.us10-001.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsusva$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsusva$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-US(OR)")
             echo "CF_API=https://api.cf.us11.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsusor$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsusor$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-EU(Frankfurt)")
             echo "CF_API=https://api.cf.eu10-005.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-waseu$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-waseu$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-JP(Tokyo)")
             echo "CF_API=https://api.cf.jp10.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awsjp$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awsjp$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "AWS-SG(Singapore)")
             echo "CF_API=https://api.cf.ap11.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-awssg$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-awssg$RANDOM_STR" >> $GITHUB_ENV
             ;;
           
           # GCP 区域
           "GCP-AU(Sydney)")
             echo "CF_API=https://api.cf.ap30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpau$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpau$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-BR(São Paulo)")
             echo "CF_API=https://api.cf.br30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpbr$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpbr$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-US(IA)")
             echo "CF_API=https://api.cf.us30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpus$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpus$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-EU(Frankfurt)")
             echo "CF_API=https://api.cf.eu30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpeu$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpeu$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-JP(Osaka)")
             echo "CF_API=https://api.cf.jp30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpjpo$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpjpo$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-JP(Tokyo)")
             echo "CF_API=https://api.cf.jp31.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpjpt$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpjpt$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-IL(Tel Aviv)")
             echo "CF_API=https://api.cf.il30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpil$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpil$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-IN(Mumbai)")
             echo "CF_API=https://api.cf.in30.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpin$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpin$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "GCP-KSA(Dammam)")
             echo "CF_API=https://api.cf.sa31.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-gcpsa$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-gcpsa$RANDOM_STR" >> $GITHUB_ENV
             ;;
           
           # Azure 区域
           "Azure-AU(Sydney)")
             echo "CF_API=https://api.cf.ap20.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azau$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azau$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-BR(São Paulo)")
             echo "CF_API=https://api.cf.br20.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azbr$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azbr$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-CA(Montreal)")
             echo "CF_API=https://api.cf.ca20.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azca$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azca$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-US(VA)")
             echo "CF_API=https://api.cf.us21.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azva$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azva$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-US(WA)")
             echo "CF_API=https://api.cf.us20.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azwa$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azwa$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-EU(Netherlands)")
             echo "CF_API=https://api.cf.eu20-001.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azeu$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azeu$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-JP(Tokyo)")
             echo "CF_API=https://api.cf.jp20.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azjp$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azjp$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Azure-SG(Singapore)")
             echo "CF_API=https://api.cf.ap21.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-azsg$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-azsg$RANDOM_STR" >> $GITHUB_ENV
             ;;
           
           # SAP Neo 区域
           "Neo-UAE(Dubai)")
             echo "CF_API=https://api.cf.neo-ae1.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-neouae$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-neouae$RANDOM_STR" >> $GITHUB_ENV
             ;;
           "Neo-KSA(Riyadh)")
             echo "CF_API=https://api.cf.neo-sa1.hana.ondemand.com" >> $GITHUB_ENV
-            echo "APP_NAME=moontv-neoksa$RANDOM_STR" >> $GITHUB_ENV
+            echo "APP_NAME=merge-neoksa$RANDOM_STR" >> $GITHUB_ENV
             ;;
         esac
         
@@ -218,19 +209,7 @@ jobs:
         if [ -n "${{ github.event.inputs.app_name }}" ]; then
           echo "APP_NAME=${{ github.event.inputs.app_name }}" >> $GITHUB_ENV
         fi
-
-        # 如果自定义了docker镜像变量则使用定义的，否则按照选择的
-        if [[ -n "${{ secrets.DOCKER_IMAGE }}" ]]; then
-          echo "DOCKER_IMAGE=${{ secrets.DOCKER_IMAGE }}" >> $GITHUB_ENV
-        else
-          if [ "${{ github.event.inputs.type }}" = "Lunatv" ]; then
-            echo "DOCKER_IMAGE=ghcr.io/moontechlab/lunatv:latest" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.type }}" = "KatelyaTV" ]; then
-            echo "DOCKER_IMAGE=ghcr.io/katelya77/katelyatv:latest" >> $GITHUB_ENV
-          else 
-            echo "DOCKER_IMAGE=ghcr.io/eooce/moontv:latest" >> $GITHUB_ENV
-          fi
-        fi
+        
         echo "使用API端点: $CF_API"
         echo "应用名称: $APP_NAME"
         echo "部署类型: ${{ env.DOCKER_IMAGE }}"
@@ -257,32 +236,16 @@ jobs:
         if cf push ${{ env.APP_NAME }} --docker-image ${{ env.DOCKER_IMAGE }} -m ${{ env.MEMORY }} -k ${{ env.DISK }} --health-check-type port; then
           echo "Deployment successful"
         else
-         # cf delete ${{ env.APP_NAME }} -f -r
-         echo "伙计,没资源了,部署失败,请明天早上8:20至9:00再尝试部署,已清理失败部署残留"
-          # exit 1
+          cf delete ${{ env.APP_NAME }} -r -f
+          echo "伙计,没资源了,部署失败,请明天早上8:10至9:00再尝试部署,已清理失败部署残留"
+          exit 1
         fi
         
     - name: Verify deployment
       run: |
-        # 设置环境变量
-        cf set-env ${{ env.APP_NAME }} USERNAME "${{ secrets.TV_USERNAME}}"              # 用户名
-        cf set-env ${{ env.APP_NAME }} PASSWORD "${{ secrets.TV_PASSWORD || '123456'}}"  # 密码
-        cf set-env ${{ env.APP_NAME }} SITE_BASE "${{ secrets.SITE_BASE}}"               # 站点 url
-        cf set-env ${{ env.APP_NAME }} NEXT_PUBLIC_SITE_NAME "${{ secrets.NEXT_PUBLIC_SITE_NAME }}" # 站点名称
-        cf set-env ${{ env.APP_NAME }} ANNOUNCEMENT "${{ secrets.ANNOUNCEMENT }}"        # 站点公告
-        cf set-env ${{ env.APP_NAME }} NEXT_PUBLIC_STORAGE_TYPE "${{ secrets.NEXT_PUBLIC_STORAGE_TYPE }}" # 存储方式：redis、kvrocks、upstash d1
-        cf set-env ${{ env.APP_NAME }} KVROCKS_URL "${{ secrets.KVROCKS_URL }}"          # kvrocks 连接 url
-        cf set-env ${{ env.APP_NAME }} REDIS_URL "${{ secrets.REDIS_URL }}"              # redis 连接 url
-        cf set-env ${{ env.APP_NAME }} UPSTASH_URL "${{ secrets.UPSTASH_URL }}"          # upstash redis 连接 url
-        cf set-env ${{ env.APP_NAME }} UPSTASH_TOKEN "${{ secrets.UPSTASH_TOKEN }}"      # upstash redis 连接 token
-        cf set-env ${{ env.APP_NAME }} NEXT_PUBLIC_DISABLE_YELLOW_FILTER "${{ secrets.NEXT_PUBLIC_DISABLE_YELLOW_FILTER || 'false'}}" # 是否开启18+,默认开启
-        
-        # 重启应用
-        cf restage ${{ env.APP_NAME }}
-        # 检查应用状态
         STATUS=$(cf app ${{ env.APP_NAME }} | grep "requested state:" | awk '{print $3}')
         if [ "$STATUS" = "started" ]; then
-          echo "✅ Moontv启动成功"
+          echo "✅ merge启动成功"
         else
           echo "❌ 应用启动失败，当前状态: $STATUS"
           echo "查看应用日志:"
@@ -301,7 +264,7 @@ jobs:
         # 获取应用路由
         ROUTE=$(cf app ${{ env.APP_NAME }} | grep "routes:" | awk '{print $2}')
         if [ -n "$ROUTE" ]; then
-          echo "Moontv—URL: https://$ROUTE"
+          echo "merge—URL: https://$ROUTE"
         else
           echo "⚠️ 未找到应用路由，请检查部署状态。"
         fi
