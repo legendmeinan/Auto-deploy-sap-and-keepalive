@@ -3,7 +3,7 @@
 ## 概述
 
 本项目是自动部署argo隧道或直连节点到SAP Cloud平台，试用版提供完美的自动保活的方案,并适配企业版部署，企业版无需保活
-- 视频教程：https://www.youtube.com/watch?v=uHvtVaeVCvE
+- 视频教程：https://www.youtube.com/watch?v=MU_ySjg98F8
 - telegram交流反馈群组：https://t.me/eooceu
 
 ### 前置要求
