@@ -17,8 +17,8 @@
 2. 在Actions菜单允许 `I understand my workflows, go ahead and enable them` 按钮
 
 3. 在 GitHub 仓库中设置以下 secrets（Settings → Secrets and variables → Actions → New repository secret）：
-- `EMAIL`: Cloud Foundry账户邮箱(必填)
-- `PASSWORD`: Cloud Foundry账户密码(必填)
+- `EMAIL`: SAP(试用版或企业版)登录邮箱(必填)
+- `PASSWORD`: SAP(试用版或企业版)登录密码(必填)
 
 4. **设置Docker容器环境变量(也是在secrets里设置)**
    - 使用固定隧道token部署，请在cloudflare里设置端口为8001
